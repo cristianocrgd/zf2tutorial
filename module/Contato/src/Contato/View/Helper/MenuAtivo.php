@@ -6,8 +6,6 @@
  * Time: 11:52
  */
 
-<?php
-
 namespace Contato\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
