@@ -6,15 +6,29 @@
  * Time: 13:41
  */
 
+/**
+ * namespace de localizacao do nosso controller
+ */
 namespace Contato\Controller;
 
+// import ZendMvc
 use Zend\Mvc\Controller\AbstractActionController;
+
+// import ZendView
+use Zend\View\Model\ViewModel;
+
+// imort ModelContatoTable com alias
+use Contato\Model\ContatoTable as ModelContato;
 
 class ContatosController extends AbstractActionController
 {
+    protected $contatoTable;
+
     // GET /contatos
     public function indexAction()
     {
+        // enviar para view o array com key contatos e value com todos os contatos
+        return new ViewModel(array('contatos' => $this->getContatoTable()->fetchAll()));
     }
 
     // GET /contatos/novo
@@ -73,13 +87,23 @@ class ContatosController extends AbstractActionController
         // 1 - solicitar serviço para pegar o model responsável pelo find
         // 2 - solicitar form com dados desse contato encontrado
         // formulário com dados preenchidos
-        $form = array(
+        /*$form = array(
             'nome' => 'Cristiano GD',
             "telefone_principal" => "(032) xxxx-xxxx",
             "telefone_secundario" => "(032) xxxx-xxxx",
             "data_criacao" => "23/09/2015",
             "data_atualizacao" => "23/09/2015",
-        );
+        );*/
+
+        try {
+            $form = (array) $this->getContatoTable()->find($id);
+        } catch (Exception $exc) {
+            // adicionar mensagem
+            $this->flashMessenger()->addErrorMessage($exc->getMessage());
+
+            // redirecionar para action index
+            return $this->redirect()->toRoute('contatos');
+        }
 
         // dados eviados para detalhes.phtml
         return array('id' => $id, 'form' => $form);
@@ -106,11 +130,21 @@ class ContatosController extends AbstractActionController
         // 2 - solicitar form com dados desse contato encontrado
 
         // formulário com dados preenchidos
-        $form = array(
+        /*$form = array(
             'nome'                  => 'Cristiano GD',
             "telefone_principal"    => "(032) xxxx-yyyy",
             "telefone_secundario"   => "(085) xxxx-yyyy",
-        );
+        );*/
+
+        try {
+            $form = (array) $this->getContatoTable()->find($id);
+        } catch (Exception $exc) {
+            // adicionar mensagem
+            $this->flashMessenger()->addErrorMessage($exc->getMessage());
+
+            // redirecionar para action index
+            return $this->redirect()->toRoute('contatos');
+        }
 
         // dados eviados para editar.phtml
         return array('id' => $id, 'form' => $form);
@@ -172,5 +206,15 @@ class ContatosController extends AbstractActionController
 
         // redirecionar para action index
         return $this->redirect()->toRoute('contatos');
+    }
+
+    /**
+     * Metodo privado para obter instacia do Model ContatoTable
+     *
+     * @return ContatoTable
+     */
+    private function getContatoTable()
+    {
+        return $this->getServiceLocator()->get('ModelContato');
     }
 }
