@@ -68,8 +68,7 @@ class Module{
             'factories' => array(
                 'ContatoTableGateway' => function ($sm) {
                     // obter adapter db atraves do service manager
-                    //$adapter = $sm->get('AdapterDb');
-                    $adapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $adapter = $sm->get('AdapterDb');
 
                     // configurar ResultSet com nosso model Contato
                     $resultSetPrototype = new ResultSet();
