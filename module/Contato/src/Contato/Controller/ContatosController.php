@@ -114,7 +114,7 @@ class ContatosController extends AbstractActionController
         );*/
 
         try {
-            $form = (array) $this->getContatoTable()->find($id);
+            $contato = $this->getContatoTable()->find($id);
         } catch (Exception $exc) {
             // adicionar mensagem
             $this->flashMessenger()->addErrorMessage($exc->getMessage());
@@ -124,7 +124,7 @@ class ContatosController extends AbstractActionController
         }
 
         // dados eviados para detalhes.phtml
-        return array('id' => $id, 'form' => $form);
+        return ['contato' => $contato];
     }
 
     // GET /contatos/editar/id
@@ -226,15 +226,14 @@ class ContatosController extends AbstractActionController
         if (!$id) {
             // adicionar mensagem de erro
             $this->flashMessenger()->addMessage("Contato não encotrado");
-
         } else {
             // aqui vai a lógica para deletar o contato no banco
             // 1 - solicitar serviço para pegar o model responsável pelo delete
             // 2 - deleta contato
+            $this->getContatoTable()->delete($id);
 
             // adicionar mensagem de sucesso
             $this->flashMessenger()->addSuccessMessage("Contato de ID $id deletado com sucesso");
-
         }
 
         // redirecionar para action index

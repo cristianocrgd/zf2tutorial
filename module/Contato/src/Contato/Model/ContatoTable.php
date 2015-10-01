@@ -102,4 +102,14 @@ class ContatoTable
 
         return $this->tableGateway->insert($data);
     }
+
+    /**
+     * Deletar um contato existente
+     *
+     * @param type $id
+     */
+    public function delete($id)
+    {
+        $this->tableGateway->delete(array('id' => (int) $id));
+    }
 }

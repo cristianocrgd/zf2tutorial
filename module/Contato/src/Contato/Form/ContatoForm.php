@@ -78,7 +78,7 @@ class ContatoForm extends Form
                 ->setName('captcha')
                 ->setOptions(array(
                     'captcha' => (new Captcha\Figlet(array(
-                        'wordLen'       => 12,      # quantidade de caracteres para o nosso captcha
+                        'wordLen'       => 2,      # quantidade de caracteres para o nosso captcha
                         'timeout'       => 300,     # tempo de validade do captcha em milisegundos
                         'outputWidth'   => '500',   # quantidade de strings por linha do capcha
                         'font'          => 'data/fonts/banner3.flf', # font para o captcha do tipo figlet
